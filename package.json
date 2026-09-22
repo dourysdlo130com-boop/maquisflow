@@ -1,0 +1,8 @@
+{
+  "name": "maquisflow-v1-1",
+  "version": "1.1.0",
+  "private": true,
+  "description": "MaquisFlow V1.1 - digital menu, WhatsApp ordering and restaurant dashboard with SQLite",
+  "scripts": {"start": "node server.js"},
+  "engines": {"node": ">=22"}
+}
