@@ -381,7 +381,7 @@ if (restaurant) {
 /* =========================================================
    SESSIONS
    ========================================================= */
-
+db.prepare('UPDATE restaurants SET name = ? WHERE slug = ?').run('LA COUR DES GRANDS', 'chez-awa');
 const sessions = new Map();
 
 function createSession(userId) {
