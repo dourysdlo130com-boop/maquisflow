@@ -1,30 +1,49 @@
 <!doctype html>
-<html lang="fr"><head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#17251f">
-<meta name="description" content="MaquisFlow, la gestion digitale des restaurants et maquis.">
-<title>MaquisFlow — Gestion restaurant</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<meta name="description" content="Découvrez le menu de votre maquis et commandez simplement avec MaquisFlow.">
+<title>MaquisFlow — Menu & commandes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/styles.css"></head>
+<link rel="stylesheet" href="/styles.css">
+</head>
 <body class="mf-home mf-home-refined">
-<header class="mf-nav"><a class="mf-logo" href="/"><span class="mf-logo-mark">M</span><span>MAQUIS<em>FLOW</em></span></a><a class="mf-nav-login" href="/login">Connexion restaurateur <span>↗</span></a></header>
+<header class="mf-nav">
+  <a class="mf-logo" href="/" aria-label="MaquisFlow accueil"><span class="mf-logo-mark">M</span><span>MAQUIS<em>FLOW</em></span></a>
+  <nav aria-label="Navigation principale"><a href="/">Accueil</a><a href="/restaurant?restaurant=chez-awa&table=1">Menu</a><a href="/login">Connexion</a></nav>
+  <a class="mf-nav-cta" href="/login">Espace restaurateur <span>↗</span></a>
+  <button class="mf-menu-toggle" type="button" aria-label="Ouvrir le menu" aria-expanded="false" onclick="document.body.classList.toggle('mf-nav-open');this.setAttribute('aria-expanded',document.body.classList.contains('mf-nav-open'))">☰</button>
+</header>
 <main>
 <section class="mf-hero">
- <div class="mf-hero-copy"><div class="mf-kicker"><i></i> MAQUISFLOW</div>
- <h1>Votre restaurant,<br><span>en mieux organisé.</span></h1>
- <p>Menu digital, commandes et gestion du restaurant réunis dans un seul espace.</p>
- <div class="mf-hero-actions"><a class="mf-btn mf-btn-gold" href="/restaurant?restaurant=chez-awa&table=1">Voir le menu <b>↗</b></a><a class="mf-btn mf-btn-glass" href="/login">Accès restaurateur</a></div>
- </div>
- <div class="mf-hero-visual"><div class="mf-food-photo" role="img" aria-label="Grillades et cuisine conviviale"></div><div class="mf-photo-shade"></div><div class="mf-photo-label"><span>LA COUR DES GRANDS</span><b>La cuisine à l'honneur.</b></div></div>
+  <div class="mf-hero-copy">
+    <div class="mf-kicker"><i></i> MAQUISFLOW · CÔTE D’IVOIRE</div>
+    <h1>Savourez le meilleur de la <span>cuisine africaine.</span></h1>
+    <p>Découvrez la carte, choisissez vos plats et commandez simplement.</p>
+    <div class="mf-hero-actions"><a class="mf-btn mf-btn-gold" href="/restaurant?restaurant=chez-awa&table=1">Voir le menu <b>↗</b></a></div>
+  </div>
+  <div class="mf-hero-visual" aria-label="Cuisine africaine et grillades">
+    <div class="mf-food-photo"></div><div class="mf-photo-shade"></div>
+    <div class="mf-photo-label"><span>LA COUR DES GRANDS</span><b>Le goût du partage.</b></div>
+  </div>
 </section>
-<section class="mf-section" id="experience"><div class="mf-section-intro"><div><div class="mf-kicker mf-kicker-dark"><i></i> UNE SEULE PLATEFORME</div><h2>Simple pour vos clients.<br><em>Pratique pour votre équipe.</em></h2></div><p>Les outils essentiels pour présenter votre carte, recevoir les commandes et suivre l'activité de votre établissement.</p></div>
-<div class="mf-feature-grid">
-<article class="mf-feature mf-feature-large"><div class="mf-feature-number">01 · MENU DIGITAL</div><div class="mf-feature-icon">▤</div><h3>Votre carte, toujours à jour.</h3><p>Présentez vos plats, leurs prix et leurs disponibilités sur téléphone.</p><a href="/restaurant?restaurant=chez-awa&table=1">Consulter le menu <b>↗</b></a></article>
-<article class="mf-feature mf-feature-green"><div class="mf-feature-number">02 · COMMANDES</div><div class="mf-feature-icon">↗</div><h3>Suivez les commandes.</h3><p>Retrouvez les commandes et leur état depuis votre espace de gestion.</p><div class="mf-order-preview"><div><span class="mf-order-dot"></span><b>Suivi des commandes</b><small>Une vue claire de l'activité</small></div><strong>✓</strong></div></article>
-<article class="mf-feature mf-feature-gold"><div class="mf-feature-number">03 · TABLES & QR</div><div class="mf-feature-icon">⌘</div><h3>Un accès par table.</h3><p>Un QR code permet à vos clients d'accéder directement à votre menu.</p><div class="mf-qr-art"><span>▦</span><small>MENU DIGITAL PAR TABLE</small></div></article>
-</div></section>
+<section class="mf-section" id="experience">
+  <div class="mf-section-intro">
+    <div><div class="mf-kicker mf-kicker-dark"><i></i> MAQUISFLOW</div><h2>Tout le restaurant,<br><em>en quelques gestes.</em></h2></div>
+    <p>Une expérience simple, du menu jusqu’à la commande.</p>
+  </div>
+  <div class="mf-feature-grid">
+    <article class="mf-feature mf-feature-large"><div class="mf-feature-number">01 · MENU DIGITAL</div><div class="mf-feature-icon">▤</div><h3>La carte à portée de main.</h3><p>Consultez les plats, les prix et les disponibilités depuis votre téléphone.</p><a href="/restaurant?restaurant=chez-awa&table=1">Découvrir le menu <b>↗</b></a></article>
+    <article class="mf-feature mf-feature-green"><div class="mf-feature-number">02 · COMMANDES</div><div class="mf-feature-icon">↗</div><h3>Commander simplement.</h3><p>Composez votre commande et transmettez-la au restaurant.</p><div class="mf-order-preview"><div><span class="mf-order-dot"></span><b>Commande rapide</b><small>Un parcours clair et pratique</small></div><strong>✓</strong></div></article>
+    <article class="mf-feature mf-feature-gold"><div class="mf-feature-number">03 · QR CODE</div><div class="mf-feature-icon">⌘</div><h3>Scannez. Consultez.</h3><p>À table, accédez au menu en scannant simplement le QR code.</p><div class="mf-qr-art"><span>▦</span><small>VOTRE MENU SUR MOBILE</small></div></article>
+  </div>
+</section>
 </main>
-<footer class="mf-footer"><a class="mf-logo" href="/"><span class="mf-logo-mark">M</span><span>MAQUIS<em>FLOW</em></span></a><small>© <span id="year"></span> MaquisFlow · Côte d'Ivoire</small></footer>
+<footer class="mf-footer"><a class="mf-logo" href="/"><span class="mf-logo-mark">M</span><span>MAQUIS<em>FLOW</em></span></a><small>© <span id="year"></span> MaquisFlow · Côte d’Ivoire</small></footer>
 <script>document.getElementById('year').textContent=new Date().getFullYear();</script>
-</body></html>
+</body>
+</html>
