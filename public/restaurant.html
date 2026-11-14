@@ -8,10 +8,50 @@ const money=n=>Number(n).toLocaleString('fr-FR')+' FCFA';
 const $=id=>document.getElementById(id);
 function notify(t){$('toast').textContent=t;$('toast').style.display='block';setTimeout(()=>$('toast').style.display='none',1600)}
 async function load(){try{const response=await fetch('/api/public/'+encodeURIComponent(slug));data=await response.json();if(!response.ok)throw new Error(data.error||'Menu indisponible');$('rname').textContent=data.restaurant.name;$('tag').textContent=data.restaurant.tagline||'Découvrez notre carte.';$('tableLabel').textContent=table?'VOTRE TABLE · '+table:'COMMANDE À EMPORTER';render()}catch(e){$('menu').innerHTML='<div class="card">'+e.message+'</div>'}}
-function render(){if(!data)return;const term=$('q').value.trim().toLocaleLowerCase('fr');$('menu').innerHTML='';for(const category of data.categories){const products=data.products.filter(p=>p.category_id===category.id&&p.available&&(!term||(p.name+' '+p.description).toLocaleLowerCase('fr').includes(term)));if(!products.length)continue;const section=document.createElement('section');section.className='cat';const heading=document.createElement('h2');heading.textContent=category.name;section.appendChild(heading);for(const p of products){const row=document.createElement('div');row.className='dish';const info=document.createElement('div');const name=document.createElement('h3');name.textContent=p.name;const desc=document.createElement('div');desc.className='muted small';desc.textContent=p.description||'';const price=document.createElement('div');price.className='price';price.textContent=money(p.price);info.append(name,desc,price);const btn=document.createElement('button');btn.className='btn gold';btn.textContent='+';btn.setAttribute('aria-label','Ajouter '+p.name);btn.onclick=()=>add(p.id);row.append(info,btn);section.appendChild(row)}$('menu').appendChild(section)}if(!$('menu').children.length){$('menu').innerHTML='<p class="muted">Aucun plat ne correspond à votre recherche.</p>'}update()}
-function add(id){const item=cart.find(x=>x.id===id);if(item)item.q++;else cart.push({id,q:1});update();notify('Ajouté à votre panier')}
-function update(){let total=0,count=0;for(const item of cart){const p=data.products.find(x=>x.id===item.id);if(p){total+=p.price*item.q;count+=item.q}}$('cartSummary').textContent=count?count+' article(s) · '+money(total):'Votre panier est vide';$('checkout').disabled=!count}
+function render(){
+ if(!data)return;
+ const term=$('q').value.trim().toLocaleLowerCase('fr');$('menu').innerHTML='';
+ for(const category of data.categories){
+  const products=data.products.filter(p=>p.category_id===category.id&&p.available&&(!term||(p.name+' '+p.description).toLocaleLowerCase('fr').includes(term)));
+  if(!products.length)continue;
+  const section=document.createElement('section');section.className='cat';
+  const heading=document.createElement('h2');heading.textContent=category.name;section.appendChild(heading);
+  for(const p of products){
+   const row=document.createElement('div');row.className='dish';
+   const info=document.createElement('div');
+   const name=document.createElement('h3');name.textContent=p.name;
+   const desc=document.createElement('div');desc.className='muted small';desc.textContent=p.description||'';
+   const price=document.createElement('div');price.className='price';price.textContent=money(p.price);
+   info.append(name,desc,price);
+   const availableOptions=(data.options||[]).filter(o=>o.product_id===p.id&&o.available);
+   let selected=[];
+   if(availableOptions.length){
+    const choices=document.createElement('div');choices.className='menu-options';
+    for(const option of availableOptions){
+     const label=document.createElement('label');label.className='menu-option';
+     const check=document.createElement('input');check.type='checkbox';check.value=option.id;
+     const suffix=Number(option.price_delta)>0?' (+'+money(option.price_delta)+')':Number(option.price_delta)<0?' ('+money(option.price_delta)+')':'';
+     const text=document.createElement('span');text.textContent=option.name+suffix;
+     check.addEventListener('change',()=>{selected=Array.from(choices.querySelectorAll('input:checked')).map(x=>Number(x.value));});
+     label.append(check,text);choices.appendChild(label);
+    }
+    info.appendChild(choices);
+   }
+   const btn=document.createElement('button');btn.className='btn gold';btn.textContent='Ajouter';
+   btn.setAttribute('aria-label','Ajouter '+p.name);
+   btn.onclick=()=>add(p.id,selected);
+   row.append(info,btn);section.appendChild(row);
+  }
+  $('menu').appendChild(section);
+ }
+ if(!$('menu').children.length){$('menu').innerHTML='<p class="muted">Aucun plat disponible dans cette catégorie pour le moment.</p>'}
+ update();
+}
+function add(id,options=[]){const key=id+':'+options.slice().sort((a,b)=>a-b).join(',');const item=cart.find(x=>x.key===key);if(item)item.q++;else cart.push({id,q:1,options:[...options],key});update();notify('Ajouté à votre panier')}
+function update(){let total=0,count=0;for(const item of cart){const p=data.products.find(x=>x.id===item.id);if(p){const extras=(data.options||[]).filter(o=>item.options.includes(o.id)&&o.available).reduce((n,o)=>n+Number(o.price_delta),0);total+=(p.price+extras)*item.q;count+=item.q}}$('cartSummary').textContent=count?count+' article(s) · '+money(total):'Votre panier est vide';$('checkout').disabled=!count}
 $('q').addEventListener('input',render);
-$('checkout').onclick=async()=>{if(!cart.length)return;const items=cart.map(x=>({productId:x.id,quantity:x.q}));try{const response=await fetch('/api/orders',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({slug,tableNumber:table,items})});const result=await response.json();if(!response.ok)throw new Error(result.error||'Commande impossible');location.href=result.whatsappUrl}catch(e){notify(e.message)}};
+$('checkout').onclick=async()=>{if(!cart.length)return;const items=cart.map(x=>({productId:x.id,quantity:x.q,options:x.options}));try{const response=await fetch('/api/orders',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({slug,tableNumber:table,items})});const result=await response.json();if(!response.ok)throw new Error(result.error||'Commande impossible');location.href=result.whatsappUrl}catch(e){notify(e.message)}};
 load();
+// Le menu est rechargé périodiquement si le client garde la page ouverte.
+setInterval(load,60000);
 </script></body></html>
