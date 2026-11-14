@@ -182,3 +182,20 @@ body:has(.nav) h2{font:600 25px 'Playfair Display',Georgia,serif}
  .admin-app .table-card{break-inside:avoid;box-shadow:none!important;border:1px solid #aaa!important}
  .admin-app .qr-frame{border:0!important}
 }
+
+/* UX corrections */
+.admin-app .toast{display:block;opacity:0;visibility:hidden;pointer-events:none;z-index:1000;max-width:min(420px,calc(100vw - 32px));background:#17251f;color:#f8f4e9;border:1px solid #b9955b;padding:14px 18px;border-radius:12px}
+.admin-app .toast.show{opacity:1;visibility:visible}
+.admin-app .admin-content{background:linear-gradient(145deg,#e9e5db 0%,#f0ede5 52%,#e8e4da 100%)}
+.admin-app .metric-card,.admin-app .panel,.admin-app .table-card{background:#f8f5ed;border-color:#d8d0c1}
+.admin-app .modal-backdrop{position:fixed;inset:0;background:#101914bb;backdrop-filter:blur(5px);z-index:999;display:grid;place-items:center;padding:18px}
+.admin-app .modal-backdrop[hidden]{display:none}
+.admin-app .product-modal{width:min(520px,100%);max-height:90vh;overflow:auto;background:#f8f5ed;color:#202a23;border:1px solid #cbb98f;border-radius:18px;padding:26px;box-shadow:0 24px 80px #0005}
+.admin-app .modal-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px}
+.admin-app .modal-top h2{font:600 25px 'Playfair Display',Georgia,serif;margin:7px 0}
+.admin-app .modal-close{border:0;background:#e9e2d4;border-radius:50%;width:36px;height:36px;font-size:22px}
+.admin-app .product-modal label{display:grid;gap:7px;margin:14px 0;font-size:12px;font-weight:700;color:#4a5349}
+.admin-app .product-modal input,.admin-app .product-modal select,.admin-app .product-modal textarea{width:100%;border:1px solid #d8d0c1;background:#fffdf8;color:#202a23;border-radius:9px;padding:12px;font:inherit;font-size:13px}
+.admin-app .modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:20px}
+.admin-app .modal-error,.admin-app .error-state{color:#a44737;font-size:12px}
+.admin-app .error-state{padding:16px;background:#f6e9e5;border-radius:10px}
