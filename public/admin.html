@@ -28,7 +28,30 @@ async function addProduct(){const name=prompt('Nom du plat ?');if(!name)return;c
 async function editProduct(id,n,d,p,a){const name=prompt('Nom du plat',n);if(name===null)return;const price=Number(prompt('Prix en FCFA',p));if(!Number.isInteger(price)||price<=0)return notify('Prix invalide');const description=prompt('Description',d);if(description===null)return;try{await api('/api/products/'+id,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,price,description,available:a})});await loadMenu();notify('Plat modifié')}catch(e){notify(e.message)}}
 async function deleteProduct(id){if(!confirm('Retirer ce produit de la carte ?'))return;try{await api('/api/products/'+id,{method:'DELETE'});await loadMenu();notify('Produit retiré')}catch(e){notify(e.message)}}
 async function loadTables(){const d=await api('/api/tables');if(!d)return;tablesList.innerHTML=d.tables.map(t=>{const u=location.origin+'/restaurant?restaurant='+encodeURIComponent(me.slug)+'&table='+t.table_number;return '<article class="table-card"><div class="table-card-top"><span class="eyebrow">ESPACE CLIENT</span><span class="table-number">'+String(t.table_number).padStart(2,'0')+'</span></div><h3>Table '+t.table_number+'</h3><p>Scannez pour consulter la carte et commander.</p><div class="qr-link">'+u+'</div><button class="text-action" onclick="copyLink(\''+u+'\')">Copier le lien ↗</button></article>'}).join('')}
-async function copyLink(u){try{await navigator.clipboard.writeText(u);notify('Lien copié')}catch(e){notify(u)}}
+async function copyLink(u){
+  try {
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(u);
+    } else {
+      const field=document.createElement('textarea');
+      field.value=u;field.setAttribute('readonly','');
+      field.style.position='fixed';field.style.opacity='0';
+      document.body.appendChild(field);field.select();
+      const copied=document.execCommand('copy');field.remove();
+      if(!copied) throw new Error('Copie indisponible');
+    }
+    notify('Lien de la table copié');
+  } catch(e) {
+    const field=document.createElement('textarea');
+    field.value=u;field.setAttribute('readonly','');
+    field.style.position='fixed';field.style.opacity='0';
+    document.body.appendChild(field);field.select();
+    let copied=false;try{copied=document.execCommand('copy')}catch(_){}
+    field.remove();
+    if(copied) notify('Lien de la table copié');
+    else { notify('Copie impossible : sélectionnez le lien affiché'); window.prompt('Copiez ce lien :',u); }
+  }
+}
 function show(id,btn){['dashboard','orders','menuTab','tables'].forEach(x=>document.getElementById(x).hidden=x!==id);document.querySelectorAll('.side-nav button').forEach(b=>b.classList.remove('active'));if(btn)btn.classList.add('active');if(id==='orders')loadOrders();if(id==='menuTab')loadMenu();if(id==='tables')loadTables()}
 function showById(id){const b=[...document.querySelectorAll('.side-nav button')].find(x=>x.getAttribute('onclick')?.includes("'"+id+"'"));show(id,b)}
 async function logout(){await api('/api/logout',{method:'POST'});location='/login'}
