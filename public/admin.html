@@ -10,7 +10,7 @@
 </section>
 <section id="orders" hidden><div class="page-heading"><div><div class="eyebrow">SUIVI EN TEMPS RÉEL</div><h1>Commandes</h1><p class="muted">Suivez et mettez à jour les commandes de vos clients.</p></div><button class="btn outline" onclick="loadOrders()">↻ Actualiser</button></div><article class="panel"><div class="panel-heading"><h2>Flux des commandes</h2><span class="panel-tag">Toutes les commandes</span></div><div id="ordersList" class="table-wrap"></div></article></section>
 <section id="menuTab" hidden><div class="page-heading"><div><div class="eyebrow">VOTRE OFFRE</div><h1>Carte & menus</h1><p class="muted">Présentez vos spécialités et gardez vos disponibilités à jour.</p></div><button class="btn gold" onclick="addProduct()">＋ Ajouter un plat</button></div><article class="panel"><div class="panel-heading"><h2>Vos produits</h2><span class="panel-tag">Catalogue</span></div><div id="products"></div></article></section>
-<section id="tables" hidden><div class="page-heading"><div><div class="eyebrow">SERVICE EN SALLE</div><h1>Tables & QR codes</h1><p class="muted">Chaque table possède un lien direct vers votre menu digital.</p></div></div><div id="tablesList" class="tables-grid"></div></section>
+<section id="tables" hidden><div class="page-heading"><div><div class="eyebrow">SERVICE EN SALLE</div><h1>Tables & QR codes</h1><p class="muted">Un QR code unique par table. Scannez-le pour ouvrir directement le menu correspondant.</p></div><button class="btn dark" onclick="printAllQR()">Imprimer tous les QR ↗</button></div><div id="tablesList" class="tables-grid"></div></section>
 </div></main><div class="toast" id="toast"></div>
 <script>
 const money=n=>Number(n).toLocaleString('fr-FR')+' FCFA';let me;
@@ -27,7 +27,26 @@ function safeJs(s){return String(s??'').replace(/\\/g,'\\\\').replace(/'/g,"\\'"
 async function addProduct(){const name=prompt('Nom du plat ?');if(!name)return;const price=Number(prompt('Prix en FCFA ?'));if(!Number.isInteger(price)||price<=0)return notify('Prix invalide');const description=prompt('Description du plat ?')||'';try{await api('/api/products',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,price,description})});await loadMenu();notify('Plat ajouté à la carte')}catch(e){notify(e.message)}}
 async function editProduct(id,n,d,p,a){const name=prompt('Nom du plat',n);if(name===null)return;const price=Number(prompt('Prix en FCFA',p));if(!Number.isInteger(price)||price<=0)return notify('Prix invalide');const description=prompt('Description',d);if(description===null)return;try{await api('/api/products/'+id,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,price,description,available:a})});await loadMenu();notify('Plat modifié')}catch(e){notify(e.message)}}
 async function deleteProduct(id){if(!confirm('Retirer ce produit de la carte ?'))return;try{await api('/api/products/'+id,{method:'DELETE'});await loadMenu();notify('Produit retiré')}catch(e){notify(e.message)}}
-async function loadTables(){const d=await api('/api/tables');if(!d)return;tablesList.innerHTML=d.tables.map(t=>{const u=location.origin+'/restaurant?restaurant='+encodeURIComponent(me.slug)+'&table='+t.table_number;return '<article class="table-card"><div class="table-card-top"><span class="eyebrow">ESPACE CLIENT</span><span class="table-number">'+String(t.table_number).padStart(2,'0')+'</span></div><h3>Table '+t.table_number+'</h3><p>Scannez pour consulter la carte et commander.</p><div class="qr-link">'+u+'</div><button class="text-action" onclick="copyLink(\''+u+'\')">Copier le lien ↗</button></article>'}).join('')}
+async function loadTables(){
+ const d=await api('/api/tables');if(!d)return;
+ tablesList.innerHTML=d.tables.map(t=>{
+  const u=location.origin+'/restaurant?restaurant='+encodeURIComponent(me.slug)+'&table='+t.table_number;
+  return '<article class="table-card qr-table" data-table="'+t.table_number+'"><div class="table-card-top"><span class="eyebrow">LA COUR DES GRANDS</span><span class="table-number">'+String(t.table_number).padStart(2,'0')+'</span></div><h3>Table '+t.table_number+'</h3><div class="qr-frame"><div class="qr-code" id="qr-'+t.table_number+'"></div></div><p class="qr-hint">Scannez pour consulter la carte et commander.</p><div class="qr-link">'+u+'</div><div class="qr-actions"><button class="btn mini outline" onclick="copyLink('+JSON.stringify(u)+')">Copier le lien</button><button class="btn mini green" onclick="downloadQR('+t.table_number+')">Télécharger PNG</button></div></article>';
+ }).join('');
+ if(!window.QRCode){document.querySelectorAll('.qr-code').forEach(el=>el.textContent='Générateur QR indisponible. Rechargez la page.');return}
+ d.tables.forEach(t=>{
+  const u=location.origin+'/restaurant?restaurant='+encodeURIComponent(me.slug)+'&table='+t.table_number;
+  new QRCode(document.getElementById('qr-'+t.table_number),{text:u,width:190,height:190,colorDark:'#17251f',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.H});
+ });
+}
+function downloadQR(n){
+ const box=document.getElementById('qr-'+n);if(!box)return notify('QR code introuvable');
+ const canvas=box.querySelector('canvas');const img=box.querySelector('img');
+ let url=canvas?canvas.toDataURL('image/png'):img?.src;
+ if(!url)return notify('Le QR code n’est pas encore prêt');
+ const a=document.createElement('a');a.href=url;a.download='maquisflow-table-'+n+'.png';a.click();notify('QR code téléchargé');
+}
+function printAllQR(){window.print();}
 async function copyLink(u){
   try {
     if (navigator.clipboard && window.isSecureContext) {
