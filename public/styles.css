@@ -87,3 +87,77 @@ body:has(.nav) h2{font:600 25px 'Playfair Display',Georgia,serif}
 .mf-home .mf-footer{padding:23px clamp(20px,5vw,76px)}
 @media(max-width:900px){.mf-home .mf-hero{grid-template-columns:1fr;gap:30px}.mf-home .mf-hero-visual{justify-self:center}.mf-home .mf-section-intro{grid-template-columns:1fr;gap:12px}}
 @media(max-width:620px){.mf-home .mf-nav{height:68px}.mf-home .mf-hero{padding:43px 20px 45px}.mf-home .mf-hero h1{font-size:clamp(38px,10vw,52px)}.mf-home .mf-hero-visual{height:330px}.mf-home .mf-section{padding:58px 20px 64px}.mf-home .mf-feature{min-height:300px}}
+
+
+/* ADMIN — premium workspace layout */
+.admin-app{min-height:100vh;background:#f2efe7;color:#202a23}
+.admin-app .sidebar{position:fixed;inset:0 auto 0 0;width:272px;padding:30px 22px;background:#17251f;color:#f7f3e9;display:flex;flex-direction:column;z-index:20;border-right:1px solid #ffffff12}
+.admin-app .side-brand{display:flex;align-items:center;gap:12px;font-size:15px;font-weight:800;letter-spacing:.13em;line-height:1.1}
+.admin-app .side-brand em{font-style:normal;color:#d5b47c}
+.admin-app .side-brand small{display:block;margin-top:6px;font-size:9px;letter-spacing:.2em;color:#b8c1b8}
+.admin-app .brand-mark{width:42px;height:42px;border:1px solid #c7a36a;border-radius:13px;display:grid;place-items:center;color:#dfc18c;font:600 25px Georgia}
+.admin-app .side-label{margin:52px 0 13px 10px;color:#a8b2a8;font-size:9px;font-weight:700;letter-spacing:.2em}
+.admin-app .side-nav{display:grid;gap:7px}
+.admin-app .side-nav button{width:100%;display:flex;align-items:center;gap:12px;text-align:left;border:1px solid transparent;background:transparent;color:#c9d0c7;padding:13px 14px;border-radius:11px;font-size:13px;font-weight:600}
+.admin-app .side-nav button i{font-style:normal;color:#d2b47f;font-size:17px}
+.admin-app .side-nav button:hover,.admin-app .side-nav button.active{background:#ffffff12;border-color:#ffffff12;color:#fff}
+.admin-app .side-count{margin-left:auto;background:#c6a36a;color:#1c2821;border-radius:20px;padding:2px 8px;font-size:10px}
+.admin-app .sidebar-bottom{margin-top:auto}
+.admin-app .support-card{padding:17px;background:#ffffff0c;border:1px solid #ffffff18;border-radius:14px}
+.admin-app .support-card b{display:block;margin-top:8px;font-size:13px}
+.admin-app .support-card p{margin:8px 0 0;color:#aeb8ae;font-size:11px;line-height:1.6}
+.admin-app .support-icon{color:#d5b47c}
+.admin-app .side-logout{margin-top:14px;width:100%;padding:12px;border:1px solid #ffffff25;border-radius:10px;background:transparent;color:#eee9dd;font-size:12px}
+.admin-app .admin-main{margin-left:272px;min-height:100vh}
+.admin-app .admin-header{height:82px;padding:0 clamp(24px,4vw,58px);display:flex;align-items:center;justify-content:space-between;background:#fbf9f4;border-bottom:1px solid #e6e0d5}
+.admin-app .header-restaurant{font:600 18px 'Playfair Display',Georgia,serif;margin-top:4px}
+.admin-app .header-right{display:flex;align-items:center;gap:10px}
+.admin-app .live-dot{width:8px;height:8px;border-radius:50%;background:#6d9a72;box-shadow:0 0 0 4px #6d9a721c}
+.admin-app .avatar{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:#e9dfcc;color:#435342;font-weight:700}
+.admin-app .admin-content{max-width:1440px;margin:auto;padding:38px clamp(24px,4vw,58px) 70px}
+.admin-app .page-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin-bottom:28px}
+.admin-app .page-heading h1{font:600 clamp(30px,3.2vw,42px)/1.12 'Playfair Display',Georgia,serif;letter-spacing:-.025em;margin:10px 0}
+.admin-app .page-heading p{font-size:13px;line-height:1.6;margin:0}
+.admin-app .btn{border-radius:9px;padding:12px 17px;font-size:12px}
+.admin-app .stats-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px;margin-bottom:18px}
+.admin-app .metric-card,.admin-app .panel{background:#fbfaf6;border:1px solid #e6e0d5;border-radius:15px;box-shadow:0 8px 28px #27332908}
+.admin-app .metric-card{padding:20px}
+.admin-app .metric-top{display:flex;justify-content:space-between;align-items:center;color:#74796f;font-size:11px}
+.admin-app .metric-icon{color:#b9955b;font-size:17px}
+.admin-app .metric-card>strong{display:block;margin:16px 0 5px;font:600 29px 'Playfair Display',Georgia,serif;color:#294b39}
+.admin-app .metric-note{font-size:10px;color:#8a8d83}
+.admin-app .dashboard-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.admin-app .panel{padding:22px;margin-bottom:18px}
+.admin-app .panel-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:17px}
+.admin-app .panel-heading h2{font:600 19px 'Playfair Display',Georgia,serif;margin:5px 0}
+.admin-app .panel-tag{padding:6px 9px;background:#f0eadf;border-radius:20px;color:#72684f;font-size:10px}
+.admin-app .ranking-list,.admin-app .recent-list{display:grid}
+.admin-app .rank-row,.admin-app .recent-row{display:flex;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid #eee9df}
+.admin-app .rank-number{color:#b9955b;font:600 18px Georgia}
+.admin-app .rank-info{display:grid;gap:4px}.admin-app .rank-info b,.admin-app .recent-row b{font-size:12px}
+.admin-app .rank-info small,.admin-app .recent-row small{color:#81867d;font-size:10px}
+.admin-app .rank-arrow{margin-left:auto;color:#a88b5b}
+.admin-app .recent-row>div:first-child{display:grid;gap:5px}
+.admin-app .recent-right{margin-left:auto;display:grid;justify-items:end;gap:6px}
+.admin-app .text-action{border:0;background:transparent;color:#876b3d;font-size:11px;font-weight:700;padding:8px}
+.admin-app .tables-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.admin-app .table-card{background:#fbfaf6;border:1px solid #e4ded2;border-radius:15px;padding:20px;box-shadow:0 8px 28px #27332908;min-width:0}
+.admin-app .table-card-top{display:flex;justify-content:space-between;align-items:center;padding-bottom:14px;border-bottom:1px solid #eee9df}
+.admin-app .table-number{font:600 22px 'Playfair Display',Georgia,serif;color:#b18d55}
+.admin-app .table-card h3{font:600 20px 'Playfair Display',Georgia,serif;margin:17px 0 6px}
+.admin-app .table-card p{font-size:11px;color:#777d73;line-height:1.5;margin:0 0 12px}
+.admin-app .qr-link{padding:10px;background:#f0ede5;border:1px solid #e4ded2;border-radius:8px;color:#687066;font-size:10px;line-height:1.5;overflow-wrap:anywhere}
+.admin-app .table-card .text-action{margin-top:8px;padding-left:0}
+.admin-app .toast{display:block;opacity:0;visibility:hidden;transform:translateY(8px);transition:.2s;box-shadow:0 10px 35px #0002}
+.admin-app .toast.show{opacity:1;visibility:visible;transform:translateY(0)}
+.admin-app .table-wrap{overflow:auto}
+.admin-app .table{min-width:650px}
+.admin-app .product-row{display:flex;align-items:center;gap:14px;padding:15px 0;border-bottom:1px solid #eee9df}
+.admin-app .product-main{flex:1;display:grid;gap:5px}.admin-app .product-main b{font-size:13px}.admin-app .product-main small{font-size:11px;color:#7b8077}
+.admin-app .product-price{font-size:12px;font-weight:700;color:#294b39}
+.admin-app .availability{font-size:10px;font-weight:700}.admin-app .is-on{color:#477b55}.admin-app .is-off{color:#a15d4d}
+.admin-app .mini{padding:8px 11px;font-size:10px}.admin-app .icon-btn{border:0;background:#f3e8e3;color:#985f50;border-radius:8px;padding:7px 10px}
+.admin-app .empty-state{padding:20px 0;font-size:12px}
+@media(max-width:1050px){.admin-app .sidebar{width:225px;padding:24px 16px}.admin-app .admin-main{margin-left:225px}.admin-app .stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.admin-app .tables-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:720px){.admin-app .sidebar{position:relative;width:auto;inset:auto;padding:14px 16px}.admin-app .side-label,.admin-app .sidebar-bottom{display:none}.admin-app .side-brand{font-size:12px}.admin-app .side-brand .brand-mark{width:34px;height:34px}.admin-app .side-nav{display:flex;overflow:auto;margin-top:14px}.admin-app .side-nav button{white-space:nowrap;width:auto;padding:10px 12px;font-size:11px}.admin-app .admin-main{margin-left:0}.admin-app .admin-header{height:65px;padding:0 18px}.admin-app .admin-content{padding:25px 16px 48px}.admin-app .page-heading{align-items:flex-start;flex-direction:column}.admin-app .dashboard-grid{grid-template-columns:1fr}.admin-app .tables-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:460px){.admin-app .stats-grid,.admin-app .tables-grid{grid-template-columns:1fr}.admin-app .table-card{padding:16px}.admin-app .header-right .small{display:none}}
