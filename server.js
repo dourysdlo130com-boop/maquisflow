@@ -445,7 +445,7 @@ async function api(req, res, url) {
   /* ---------- QR CODE IMAGE (PUBLIC) ---------- */
   if (req.method === 'GET' && url.pathname === '/api/qr') {
     const text = cleanText(url.searchParams.get('text'), 2000);
-    if (!text || !/^https?:\\/\\//i.test(text)) {
+    if (!text || !/^https?:\/\//i.test(text)) {
       return send(res, 400, { error: 'Adresse QR invalide' });
     }
     try {
