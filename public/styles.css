@@ -161,3 +161,24 @@ body:has(.nav) h2{font:600 25px 'Playfair Display',Georgia,serif}
 @media(max-width:1050px){.admin-app .sidebar{width:225px;padding:24px 16px}.admin-app .admin-main{margin-left:225px}.admin-app .stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.admin-app .tables-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:720px){.admin-app .sidebar{position:relative;width:auto;inset:auto;padding:14px 16px}.admin-app .side-label,.admin-app .sidebar-bottom{display:none}.admin-app .side-brand{font-size:12px}.admin-app .side-brand .brand-mark{width:34px;height:34px}.admin-app .side-nav{display:flex;overflow:auto;margin-top:14px}.admin-app .side-nav button{white-space:nowrap;width:auto;padding:10px 12px;font-size:11px}.admin-app .admin-main{margin-left:0}.admin-app .admin-header{height:65px;padding:0 18px}.admin-app .admin-content{padding:25px 16px 48px}.admin-app .page-heading{align-items:flex-start;flex-direction:column}.admin-app .dashboard-grid{grid-template-columns:1fr}.admin-app .tables-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:460px){.admin-app .stats-grid,.admin-app .tables-grid{grid-template-columns:1fr}.admin-app .table-card{padding:16px}.admin-app .header-right .small{display:none}}
+
+/* TABLE QR PRINT SYSTEM */
+.admin-app .qr-table{display:flex;flex-direction:column;align-items:center;text-align:center}
+.admin-app .qr-table .table-card-top{width:100%;text-align:left}
+.admin-app .qr-table h3{margin:14px 0 10px}
+.admin-app .qr-frame{width:214px;height:214px;background:#fff;border:1px solid #e7e1d6;border-radius:12px;display:grid;place-items:center;padding:10px;margin:4px auto 10px}
+.admin-app .qr-code{width:190px;height:190px;display:grid;place-items:center}
+.admin-app .qr-code img,.admin-app .qr-code canvas{display:block;width:190px!important;height:190px!important}
+.admin-app .qr-hint{font-size:11px;color:#70776e;margin:0 0 12px}
+.admin-app .qr-table .qr-link{width:100%;text-align:left;font-size:9px}
+.admin-app .qr-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:12px}
+@media print{
+ body.admin-app{background:#fff!important}
+ .admin-app .sidebar,.admin-app .admin-header,.admin-app .page-heading,.admin-app #dashboard,.admin-app #orders,.admin-app #menuTab,.admin-app .qr-link,.admin-app .qr-actions,.admin-app .qr-hint{display:none!important}
+ .admin-app .admin-main{margin:0!important}
+ .admin-app .admin-content{padding:0!important}
+ .admin-app #tables{display:block!important}
+ .admin-app .tables-grid{display:grid!important;grid-template-columns:repeat(3,1fr)!important;gap:12px!important}
+ .admin-app .table-card{break-inside:avoid;box-shadow:none!important;border:1px solid #aaa!important}
+ .admin-app .qr-frame{border:0!important}
+}
