@@ -207,7 +207,7 @@ if (!restaurantCount) {
   ).run(
     restaurantId,
     'Gérant LA COUR DES GRANDS',
-    'admin@chezawa.ci',
+    'ourydiallo@gmail.com',
     hash('admin123')
   );
 
@@ -295,8 +295,8 @@ if (!restaurantCount) {
 
   db.prepare(
     `UPDATE users
-     SET name='Gérant LA COUR DES GRANDS'
-     WHERE email='admin@chezawa.ci'`
+     SET name='Gérant LA COUR DES GRANDS', email='ourydiallo@gmail.com'
+     WHERE email IN ('admin@chezawa.ci','ourydiallo@gmail.com')`
   ).run();
 }
 
