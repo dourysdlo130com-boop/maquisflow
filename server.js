@@ -3,6 +3,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const crypto = require('node:crypto');
 const { DatabaseSync } = require('node:sqlite');
+const QRCode = require('qrcode');
 
 const PORT = process.env.PORT || 3000;
 const ROOT = __dirname;
@@ -441,6 +442,28 @@ function requireUser(req, res) {
 
 async function api(req, res, url) {
 
+  /* ---------- QR CODE IMAGE (PUBLIC) ---------- */
+  if (req.method === 'GET' && url.pathname === '/api/qr') {
+    const text = cleanText(url.searchParams.get('text'), 2000);
+    if (!text || !/^https?:\\/\\//i.test(text)) {
+      return send(res, 400, { error: 'Adresse QR invalide' });
+    }
+    try {
+      const png = await QRCode.toBuffer(text, {
+        type: 'png', width: 420, margin: 2,
+        errorCorrectionLevel: 'H',
+        color: { dark: '#17251f', light: '#ffffff' }
+      });
+      res.writeHead(200, {
+        'Content-Type': 'image/png',
+        'Cache-Control': 'no-store, max-age=0'
+      });
+      return res.end(png);
+    } catch (e) {
+      return send(res, 500, { error: 'Génération du QR impossible' });
+    }
+  }
+
   /* ---------- LOGIN ---------- */
 
   if (
@@ -604,7 +627,7 @@ async function api(req, res, url) {
       categories,
       products,
       options
-    });
+    }, { 'Cache-Control': 'no-store, max-age=0, must-revalidate', 'Pragma': 'no-cache' });
   }
 
   /* =======================================================
