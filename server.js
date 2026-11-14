@@ -208,8 +208,8 @@ if (!restaurantCount) {
   ).run(
     restaurantId,
     'Gérant LA COUR DES GRANDS',
-    'ourydiallo@gmail.com',
-    hash('admin123')
+    'lacourdesgrands@gmail.com',
+    hash(process.env.RESTAURANT_ADMIN_PASSWORD || crypto.randomBytes(32).toString('hex'))
   );
 
   const cats = [
@@ -290,15 +290,24 @@ if (!restaurantCount) {
 
   db.prepare(
     `UPDATE restaurants
-     SET name='LA COUR DES GRANDS'
+     SET name='LA COUR DES GRANDS', whatsapp='2250779659107'
      WHERE slug='chez-awa'`
   ).run();
 
   db.prepare(
     `UPDATE users
-     SET name='Gérant LA COUR DES GRANDS', email='ourydiallo@gmail.com'
-     WHERE email IN ('admin@chezawa.ci','ourydiallo@gmail.com')`
+     SET name='Gérant LA COUR DES GRANDS', email='lacourdesgrands@gmail.com'
+     WHERE restaurant_id=(SELECT id FROM restaurants WHERE slug='chez-awa')
+       AND email IN ('admin@chezawa.ci','ourydiallo@gmail.com','lacourdesgrands@gmail.com')`
   ).run();
+
+  const restaurantPassword = String(process.env.RESTAURANT_ADMIN_PASSWORD || '');
+  if (restaurantPassword) {
+    db.prepare(
+      `UPDATE users SET password_hash=?
+       WHERE email='lacourdesgrands@gmail.com'`
+    ).run(hash(restaurantPassword));
+  }
 }
 
 /* =========================================================
