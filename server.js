@@ -200,7 +200,7 @@ if (!restaurantCount) {
       'LA COUR DES GRANDS',
       'chez-awa',
       'Maquis • Grillades • Spécialités ivoiriennes',
-      '2250700000000'
+      '2250585809784'
     ).lastInsertRowid;
 
   db.prepare(
@@ -309,6 +309,11 @@ if (!restaurantCount) {
     ).run(hash(restaurantPassword));
   }
 }
+
+// Force le numéro actuel de LA COUR DES GRANDS, même sur une base nouvellement créée.
+db.prepare(
+  `UPDATE restaurants SET whatsapp='2250585809784' WHERE slug='chez-awa'`
+).run();
 
 /* =========================================================
    DEMO DATA REPAIR
