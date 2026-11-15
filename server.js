@@ -121,6 +121,20 @@ for (const [name, definition] of [
   if (!orderColumns.includes(name)) db.exec(`ALTER TABLE orders ADD COLUMN ${name} ${definition}`);
 }
 
+db.exec(`
+CREATE TABLE IF NOT EXISTS order_payment_events (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  order_id INTEGER NOT NULL,
+  event_type TEXT NOT NULL,
+  amount INTEGER NOT NULL DEFAULT 0,
+  method TEXT NOT NULL DEFAULT '',
+  reference TEXT NOT NULL DEFAULT '',
+  note TEXT NOT NULL DEFAULT '',
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE
+);
+`);
+
 /* =========================================================
    HELPERS
    ========================================================= */
@@ -1103,8 +1117,14 @@ async function api(req, res, url) {
 
     if (b.paymentStatus === 'paid') {
       if (!existingOrder.deposit_required) return send(res, 400, { error: 'Aucun acompte requis pour cette commande.' });
-      db.prepare(`UPDATE orders SET payment_status='paid', payment_reference=? WHERE id=? AND restaurant_id=?`)
-        .run(cleanText(b.paymentReference, 100), id, u.restaurant_id);
+      if (existingOrder.payment_status === 'paid') return send(res, 200, { ok: true, paymentStatus: 'paid' });
+      const reference = cleanText(b.paymentReference, 100);
+      db.exec('BEGIN');
+      try {
+        db.prepare(`UPDATE orders SET payment_status='paid', payment_reference=? WHERE id=? AND restaurant_id=?`).run(reference, id, u.restaurant_id);
+        db.prepare(`INSERT INTO order_payment_events (order_id,event_type,amount,method,reference,note) VALUES(?,?,?,?,?,?)`).run(id, 'deposit_confirmed', existingOrder.deposit_amount, existingOrder.payment_method, reference, 'Confirmation manuelle par le restaurant après vérification du portefeuille');
+        db.exec('COMMIT');
+      } catch (error) { db.exec('ROLLBACK'); throw error; }
       return send(res, 200, { ok: true, paymentStatus: 'paid' });
     }
 
@@ -1120,6 +1140,9 @@ async function api(req, res, url) {
       });
     }
 
+    const cancelReason = cleanText(b.cancelReason, 300);
+    if (status === 'cancelled' && !cancelReason) return send(res, 400, { error: 'Indiquez le motif d’annulation.' });
+
     if (status === 'preparing' && existingOrder.deposit_required && existingOrder.payment_status !== 'paid') {
       return send(res, 409, { error: 'Confirmez d’abord la réception de l’acompte avant la préparation.' });
     }
@@ -1127,11 +1150,12 @@ async function api(req, res, url) {
     const result =
       db.prepare(
         `UPDATE orders
-         SET status=?
+         SET status=?, cancel_reason=?
          WHERE id=?
          AND restaurant_id=?`
       ).run(
         status,
+        status === 'cancelled' ? cancelReason : existingOrder.cancel_reason,
         id,
         u.restaurant_id
       );
