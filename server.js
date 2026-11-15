@@ -290,7 +290,7 @@ if (!restaurantCount) {
 
   db.prepare(
     `UPDATE restaurants
-     SET name='LA COUR DES GRANDS', whatsapp='2250779659107'
+     SET name='LA COUR DES GRANDS', whatsapp='2250585809784'
      WHERE slug='chez-awa'`
   ).run();
 
