@@ -108,6 +108,19 @@ CREATE TABLE IF NOT EXISTS order_items (
 );
 `);
 
+// Champs de paiement ajoutés sans effacer les commandes existantes.
+const orderColumns = db.prepare('PRAGMA table_info(orders)').all().map(c => c.name);
+for (const [name, definition] of [
+  ['deposit_required', 'INTEGER NOT NULL DEFAULT 0'],
+  ['deposit_amount', 'INTEGER NOT NULL DEFAULT 0'],
+  ['payment_method', "TEXT NOT NULL DEFAULT 'onsite'"],
+  ['payment_status', "TEXT NOT NULL DEFAULT 'not_required'"],
+  ['payment_reference', "TEXT NOT NULL DEFAULT ''"],
+  ['cancel_reason', "TEXT NOT NULL DEFAULT ''"]
+]) {
+  if (!orderColumns.includes(name)) db.exec(`ALTER TABLE orders ADD COLUMN ${name} ${definition}`);
+}
+
 /* =========================================================
    HELPERS
    ========================================================= */
@@ -806,6 +819,15 @@ async function api(req, res, url) {
         });
       }
 
+      const depositRequired = total >= 10000;
+      const depositAmount = depositRequired ? Math.max(3000, Math.ceil(total * 0.30)) : 0;
+      const paymentMethod = depositRequired
+        ? (['wave', 'orange_money'].includes(cleanText(b.paymentMethod, 30)) ? cleanText(b.paymentMethod, 30) : '')
+        : 'onsite';
+      if (depositRequired && !paymentMethod) {
+        return send(res, 400, { error: 'Choisissez Wave ou Orange Money pour régler l’acompte.' });
+      }
+
       const tableNumber =
         b.tableNumber !== '' &&
         b.tableNumber !== null &&
@@ -826,9 +848,13 @@ async function api(req, res, url) {
                customer_phone,
                total,
                status,
-               source
+               source,
+               deposit_required,
+               deposit_amount,
+               payment_method,
+               payment_status
              )
-             VALUES(?,?,?,?,?,?,?)`
+             VALUES(?,?,?,?,?,?,?,?,?,?,?)`
           ).run(
             r.id,
             tableNumber || null,
@@ -836,7 +862,11 @@ async function api(req, res, url) {
             cleanText(b.customerPhone, 50),
             total,
             'new',
-            'web'
+            'web',
+            depositRequired ? 1 : 0,
+            depositAmount,
+            paymentMethod,
+            depositRequired ? 'pending' : 'not_required'
           );
 
         const orderId =
@@ -879,17 +909,21 @@ async function api(req, res, url) {
         });
 
         const text =
-          `Bonjour, je souhaite passer une commande chez ${r.name} 😊\n\n` +
+          `Je souhaite passer une commande chez ${r.name} 😊\n\n` +
+          `Commande #${orderId}\n` +
           (tableNumber ? `Table : ${tableNumber}\n` : '') +
           `${lines.join('\n')}\n\n` +
-          `*Total : ${money(total)}*\n\n` +
-          `Merci de confirmer ma commande.`;
+          `*Total : ${money(total)}*\n` +
+          (depositRequired
+            ? `Acompte à régler (${paymentMethod === 'wave' ? 'Wave' : 'Orange Money'}) : ${money(depositAmount)}\nSolde restant : ${money(total - depositAmount)}\nTitulaire : Oury Diallo\nNuméro : 0768437045\nStatut : acompte à vérifier\n\nMerci de confirmer la commande après vérification du paiement.`
+            : `Paiement sur place.\nMerci de confirmer ma commande.`);
 
         return send(res, 201, {
-          orderId,
-          total,
-          whatsappUrl:
-            whatsappUrl(r.whatsapp, text)
+          orderId, total, depositRequired, depositAmount,
+          paymentMethod, paymentStatus: depositRequired ? 'pending' : 'not_required',
+          paymentNumber: depositRequired ? '0768437045' : null,
+          paymentHolder: depositRequired ? 'Oury Diallo' : null,
+          whatsappUrl: whatsappUrl(r.whatsapp, text)
         });
 
       } catch (e) {
@@ -1064,6 +1098,16 @@ async function api(req, res, url) {
 
     const b = await readBody(req);
 
+    const existingOrder = db.prepare('SELECT * FROM orders WHERE id=? AND restaurant_id=?').get(id, u.restaurant_id);
+    if (!existingOrder) return send(res, 404, { error: 'Commande introuvable' });
+
+    if (b.paymentStatus === 'paid') {
+      if (!existingOrder.deposit_required) return send(res, 400, { error: 'Aucun acompte requis pour cette commande.' });
+      db.prepare(`UPDATE orders SET payment_status='paid', payment_reference=? WHERE id=? AND restaurant_id=?`)
+        .run(cleanText(b.paymentReference, 100), id, u.restaurant_id);
+      return send(res, 200, { ok: true, paymentStatus: 'paid' });
+    }
+
     const status =
       cleanText(b.status, 30);
 
@@ -1074,6 +1118,10 @@ async function api(req, res, url) {
       return send(res, 400, {
         error: 'Statut invalide'
       });
+    }
+
+    if (status === 'preparing' && existingOrder.deposit_required && existingOrder.payment_status !== 'paid') {
+      return send(res, 409, { error: 'Confirmez d’abord la réception de l’acompte avant la préparation.' });
     }
 
     const result =
