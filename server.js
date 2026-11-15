@@ -878,13 +878,22 @@ async function api(req, res, url) {
           return `• ${item.quantity}x ${item.product.name}${optionPart} — ${money(item.unitPrice * item.quantity)}`;
         });
 
+        const customerName = cleanText(b.customerName, 150);
+        const customerPhone = cleanText(b.customerPhone, 50);
         const text =
-          `Bonjour ${r.name} 👋\n` +
-          `Je souhaite commander` +
-          `${tableNumber ? ` pour la table ${tableNumber}` : ''}:\n\n` +
+          `*NOUVELLE COMMANDE — ${r.name.toUpperCase()}*\n` +
+          `━━━━━━━━━━━━━━━━━━\n` +
+          `Bonjour, je souhaite passer la commande suivante :\n\n` +
+          `*RÉFÉRENCE :* #${orderId}\n` +
+          (tableNumber ? `*TABLE :* ${tableNumber}\n` : '') +
+          (customerName ? `*CLIENT :* ${customerName}\n` : '') +
+          (customerPhone ? `*TÉLÉPHONE :* ${customerPhone}\n` : '') +
+          `\n*DÉTAIL DE LA COMMANDE*\n` +
           `${lines.join('\n')}\n\n` +
-          `Total : ${money(total)}\n` +
-          `Merci !`;
+          `━━━━━━━━━━━━━━━━━━\n` +
+          `*TOTAL À RÉGLER : ${money(total)}*\n\n` +
+          `Merci de bien vouloir confirmer la disponibilité de ma commande ainsi que le délai de préparation.\n\n` +
+          `Cordialement.`;
 
         return send(res, 201, {
           orderId,
