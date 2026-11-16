@@ -207,3 +207,49 @@ body:has(.nav) h2{font:600 25px 'Playfair Display',Georgia,serif}
 .menu .cartbar .btn{flex:0 0 auto;min-height:44px;}
 .menu .wrap{padding-bottom:34px;}
 @media(max-width:620px){.menu .cartbar{position:sticky;bottom:8px;margin:22px 0 12px;padding:10px 11px 10px 14px;gap:10px;border-radius:15px;}.menu .cartbar #cartSummary{font-size:12px;}.menu .cartbar .btn{min-height:40px;padding:10px 13px;font-size:11px;}}
+
+
+/* MaquisFlow premium restaurant dashboard */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap');
+.admin-app{font-family:'Inter',system-ui,sans-serif;background:#f2f5f1;color:#1d2b23;letter-spacing:-.012em}
+.admin-app h1,.admin-app h2,.admin-app h3,.admin-app .header-restaurant{font-family:'Manrope','Inter',sans-serif;letter-spacing:-.04em}
+.admin-app .eyebrow{font-family:'Inter',sans-serif;font-size:10px;letter-spacing:.16em;font-weight:800;color:#9a7744}
+.admin-app .page-heading h1{font-size:clamp(30px,3vw,42px);font-weight:800;line-height:1.12;margin:12px 0 8px;color:#182820}
+.admin-app .page-heading p{font-size:13px;line-height:1.65;color:#69766d}
+.admin-app .sidebar{background:#172820;border-right:1px solid #304438}
+.admin-app .side-brand{font-family:'Manrope',sans-serif;letter-spacing:.08em}
+.admin-app .side-nav button{border-radius:10px;font-weight:600;transition:background .18s,color .18s,transform .18s}
+.admin-app .side-nav button:hover{background:#ffffff12;color:#f3d9aa;transform:translateX(2px)}
+.admin-app .side-nav button.active{background:#d2b17a;color:#172820;box-shadow:0 7px 18px #0c171122}
+.admin-app .admin-header{background:#fbfcfa;border-bottom:1px solid #e2e8e1}
+.admin-app .header-restaurant{font-size:15px;font-weight:800;color:#20352a}
+.admin-app .admin-content{max-width:1500px}
+.admin-app .metric-card,.admin-app .panel{background:#fff;border:1px solid #e3e9e2;border-radius:16px;box-shadow:0 8px 26px #20352a08}
+.admin-app .metric-card{padding:22px;min-height:154px}
+.admin-app .metric-top{font-size:12px;font-weight:600;color:#647168}
+.admin-app .metric-card strong{font-family:'Manrope',sans-serif;font-size:30px;font-weight:800;letter-spacing:-.05em;color:#244d39}
+.admin-app .metric-icon{color:#a98045}
+.admin-app .metric-note{font-size:11px;color:#879188}
+.admin-app .panel{padding:24px}
+.admin-app .panel h2{font-size:19px;font-weight:800;color:#23352b}
+.admin-app .panel-tag{background:#f1f4ef;color:#647268;border:1px solid #e4eae2;border-radius:30px;padding:7px 11px;font-size:10px;font-weight:700}
+.admin-app .table{font-size:12px}
+.admin-app .table th{background:#f7f9f6;color:#758178;font-size:10px}
+.admin-app .table td{color:#34443a;vertical-align:middle}
+.admin-app .table tr:hover td{background:#fafcf9}
+.admin-app .btn{font-family:'Inter',sans-serif;font-size:12px;font-weight:700;border-radius:10px;min-height:40px}
+.admin-app .btn.gold{background:#c9a66d;color:#1c2a22}
+.admin-app .btn.dark,.admin-app .btn.green{background:#203c2d;color:#fff}
+.admin-app .btn.outline{border:1px solid #d9e1d8;background:#fff;color:#33463a}
+.admin-app .pill{font-size:10px;font-weight:700}
+.admin-app .orders-toolbar{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 18px}
+.admin-app .orders-toolbar input,.admin-app .orders-toolbar select{min-height:42px;border:1px solid #dfe7df;border-radius:10px;background:#fbfcfa;padding:0 13px;color:#25382d;font:500 12px 'Inter',sans-serif;outline:none}
+.admin-app .orders-toolbar input{flex:1;min-width:220px}
+.admin-app .orders-toolbar input:focus,.admin-app .orders-toolbar select:focus{border-color:#b9955b;box-shadow:0 0 0 3px #b9955b20}
+.admin-app .rank-row,.admin-app .recent-row{border-bottom:1px solid #edf1ec;padding:14px 0}
+.admin-app .rank-row:last-child,.admin-app .recent-row:last-child{border-bottom:0}
+.admin-app .rank-info b,.admin-app .recent-row b{font-size:12px;font-weight:700}
+.admin-app .rank-info small,.admin-app .recent-row small{font-size:10px;color:#849087}
+.admin-app .empty-state{padding:22px 0;color:#7b887e;font-size:12px}
+.admin-app .toast{font-family:'Inter',sans-serif;border:1px solid #ffffff20;box-shadow:0 12px 34px #10221930}
+@media(max-width:760px){.admin-app .page-heading{gap:16px;align-items:flex-start;flex-direction:column}.admin-app .metric-card{padding:17px;min-height:130px}.admin-app .panel{padding:17px}.admin-app .orders-toolbar input{min-width:100%}.admin-app .table-wrap{overflow-x:auto}.admin-app .table{min-width:760px}}
