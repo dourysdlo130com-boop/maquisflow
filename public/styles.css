@@ -199,3 +199,11 @@ body:has(.nav) h2{font:600 25px 'Playfair Display',Georgia,serif}
 .admin-app .modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:20px}
 .admin-app .modal-error,.admin-app .error-state{color:#a44737;font-size:12px}
 .admin-app .error-state{padding:16px;background:#f6e9e5;border-radius:10px}
+
+
+/* Client menu cart: compact, non-obstructive and responsive */
+.menu .cartbar{position:sticky;bottom:12px;z-index:30;width:min(100%,900px);margin:28px auto 18px;padding:12px 14px 12px 20px;border:1px solid #d8cfbd;border-radius:18px;background:#1e2922;color:#fff;box-shadow:0 12px 34px #17251f30;}
+.menu .cartbar #cartSummary{min-width:0;line-height:1.4;font-size:14px;}
+.menu .cartbar .btn{flex:0 0 auto;min-height:44px;}
+.menu .wrap{padding-bottom:34px;}
+@media(max-width:620px){.menu .cartbar{position:sticky;bottom:8px;margin:22px 0 12px;padding:10px 11px 10px 14px;gap:10px;border-radius:15px;}.menu .cartbar #cartSummary{font-size:12px;}.menu .cartbar .btn{min-height:40px;padding:10px 13px;font-size:11px;}}
