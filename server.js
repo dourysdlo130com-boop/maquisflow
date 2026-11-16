@@ -424,43 +424,39 @@ if (restaurant) {
    SESSIONS
    ========================================================= */
 db.prepare('UPDATE restaurants SET name = ? WHERE slug = ?').run('LA COUR DES GRANDS', 'chez-awa');
-const sessions = new Map();
+db.exec(`
+CREATE TABLE IF NOT EXISTS auth_sessions (
+  sid TEXT PRIMARY KEY,
+  user_id INTEGER NOT NULL,
+  expires_at INTEGER NOT NULL,
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+CREATE INDEX IF NOT EXISTS idx_auth_sessions_expiry ON auth_sessions(expires_at);
+`);
+db.prepare('DELETE FROM auth_sessions WHERE expires_at <= ?').run(Date.now());
 
 function createSession(userId) {
   const sid = crypto.randomBytes(32).toString('hex');
-
-  sessions.set(sid, {
-    userId,
-    expires: Date.now() + 86400000
-  });
-
+  const expiresAt = Date.now() + 7 * 86400000;
+  db.prepare('INSERT INTO auth_sessions (sid,user_id,expires_at) VALUES(?,?,?)').run(sid,userId,expiresAt);
   return sid;
 }
 
 function userFromReq(req) {
   const sid = parseCookies(req).mf_session;
-
   if (!sid) return null;
-
-  const session = sessions.get(sid);
-
+  const session = db.prepare('SELECT user_id, expires_at FROM auth_sessions WHERE sid=?').get(sid);
   if (!session) return null;
-
-  if (session.expires <= Date.now()) {
-    sessions.delete(sid);
+  if (session.expires_at <= Date.now()) {
+    db.prepare('DELETE FROM auth_sessions WHERE sid=?').run(sid);
     return null;
   }
-
   return db.prepare(
-    `SELECT
-       u.*,
-       r.name AS restaurant_name,
-       r.slug AS restaurant_slug,
-       r.whatsapp AS restaurant_whatsapp
-     FROM users u
-     JOIN restaurants r ON r.id=u.restaurant_id
-     WHERE u.id=?`
-  ).get(session.userId);
+    `SELECT u.*, r.name AS restaurant_name,
+       r.slug AS restaurant_slug, r.whatsapp AS restaurant_whatsapp
+     FROM users u JOIN restaurants r ON r.id=u.restaurant_id WHERE u.id=?`
+  ).get(session.user_id);
 }
 
 function requireUser(req, res) {
@@ -544,7 +540,7 @@ async function api(req, res, url) {
         { ok: true },
         {
           'Set-Cookie':
-            `mf_session=${sid}; HttpOnly; SameSite=Lax; Path=/; Max-Age=86400`
+            `mf_session=${sid}; HttpOnly; SameSite=Lax; Path=/; Max-Age=604800`
         }
       );
 
@@ -564,7 +560,7 @@ async function api(req, res, url) {
     const sid = parseCookies(req).mf_session;
 
     if (sid) {
-      sessions.delete(sid);
+      db.prepare('DELETE FROM auth_sessions WHERE sid=?').run(sid);
     }
 
     return send(
