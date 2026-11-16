@@ -975,7 +975,7 @@ async function api(req, res, url) {
       db.prepare(
         `SELECT
            COUNT(*) AS orders,
-           COALESCE(SUM(total),0) AS revenue
+           COALESCE(SUM(CASE WHEN status!='cancelled' THEN total ELSE 0 END),0) AS revenue
          FROM orders
          WHERE restaurant_id=?
          AND date(created_at,'localtime')
@@ -1005,7 +1005,8 @@ async function api(req, res, url) {
          FROM orders
          WHERE restaurant_id=?
          AND date(created_at,'localtime')
-             =date('now','localtime')`
+             =date('now','localtime')
+         AND status IN ('new','preparing')`
       ).get(rid).minutes;
 
     const top =
@@ -1015,7 +1016,7 @@ async function api(req, res, url) {
            SUM(quantity) AS qty
          FROM order_items oi
          JOIN orders o ON o.id=oi.order_id
-         WHERE o.restaurant_id=?
+         WHERE o.restaurant_id=? AND o.status!='cancelled'
          GROUP BY product_name
          ORDER BY qty DESC
          LIMIT 5`
