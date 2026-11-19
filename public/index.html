@@ -1,49 +1,55 @@
 <!doctype html>
 <html lang="fr">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#17251f">
-<meta name="description" content="Découvrez le menu de votre maquis et commandez simplement avec MaquisFlow.">
-<title>MaquisFlow — Menu & commandes</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#14251d">
+<meta name="description" content="MaquisFlow aide les maquis et restaurants à gérer leur carte, leurs commandes, leurs tables et leur activité depuis un seul espace.">
+<title>MaquisFlow — Le pilotage intelligent de votre restaurant</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/styles.css">
 </head>
-<body class="mf-home mf-home-refined">
-<header class="mf-nav">
-  <a class="mf-logo" href="/" aria-label="MaquisFlow accueil"><span class="mf-logo-mark">M</span><span>MAQUIS<em>FLOW</em></span></a>
-  <nav aria-label="Navigation principale"><a href="/">Accueil</a><a href="/restaurant?restaurant=chez-awa&table=1">Menu</a><a href="/login">Connexion</a></nav>
-  <a class="mf-nav-cta" href="/login">Espace restaurateur <span>↗</span></a>
-  <button class="mf-menu-toggle" type="button" aria-label="Ouvrir le menu" aria-expanded="false" onclick="document.body.classList.toggle('mf-nav-open');this.setAttribute('aria-expanded',document.body.classList.contains('mf-nav-open'))">☰</button>
+<body class="mf-home mf-platform">
+<header class="mf-platform-nav">
+  <a class="mf-logo" href="/" aria-label="MaquisFlow accueil"><span class="mf-logo-mark">M</span><span>MAQUIS<em>FLOW</em><small>RESTAURANT MANAGEMENT</small></span></a>
+  <button class="mf-platform-toggle" type="button" aria-label="Ouvrir la navigation" aria-expanded="false" onclick="document.body.classList.toggle('mf-platform-open');this.setAttribute('aria-expanded',document.body.classList.contains('mf-platform-open'))">☰</button>
+  <nav aria-label="Navigation principale"><a href="#solution">La solution</a><a href="#outils">Fonctionnalités</a><a href="#parcours">Comment ça marche</a></nav>
+  <a class="mf-platform-login" href="/login">Espace restaurant <span>↗</span></a>
 </header>
 <main>
-<section class="mf-hero">
-  <div class="mf-hero-copy">
-    <div class="mf-kicker"><i></i> MAQUISFLOW · CÔTE D’IVOIRE</div>
-    <h1>Savourez le meilleur de la <span>cuisine africaine.</span></h1>
-    <p>Découvrez la carte, choisissez vos plats et commandez simplement.</p>
-    <div class="mf-hero-actions"><a class="mf-btn mf-btn-gold" href="/restaurant?restaurant=chez-awa&table=1">Voir le menu <b>↗</b></a></div>
+<section class="mf-platform-hero">
+ <div class="mf-platform-copy">
+  <div class="mf-kicker"><i></i> PENSÉ POUR LES RESTAURANTS D'ICI</div>
+  <h1>Votre restaurant mérite un meilleur <em>pilotage.</em></h1>
+  <p>La carte, les commandes, les tables et le suivi de votre activité réunis dans un espace simple. MaquisFlow accompagne les restaurants dans leur quotidien.</p>
+  <div class="mf-platform-actions"><a class="mf-platform-primary" href="/login">Accéder à mon espace <b>↗</b></a><a class="mf-platform-secondary" href="/restaurant?restaurant=chez-awa&table=1">Voir un menu client</a></div>
+  <div class="mf-platform-note"><span></span> Une expérience conçue pour le service en salle et la commande à emporter.</div>
+ </div>
+ <div class="mf-platform-showcase" aria-label="Aperçu de l'espace de gestion MaquisFlow">
+  <div class="mf-showcase-top"><span><i></i> MAQUISFLOW / ESPACE DE GESTION</span><b>APERÇU</b></div>
+  <div class="mf-showcase-body">
+   <aside class="mf-showcase-side"><div class="mf-showcase-mark">M</div><span class="active">Vue d'ensemble</span><span>Commandes</span><span>Carte & menus</span><span>Tables & QR</span></aside>
+   <div class="mf-showcase-main"><small>VOTRE ÉTABLISSEMENT</small><h2>Bonjour, bienvenue.</h2><p>Votre activité en un coup d'œil.</p>
+    <div class="mf-showcase-stats"><div><small>COMMANDES</small><b>Suivi</b><i>En temps réel</i></div><div><small>VOTRE CARTE</small><b>Menus</b><i>À jour</i></div><div><small>VOS TABLES</small><b>QR codes</b><i>Un accès par table</i></div></div>
+    <div class="mf-showcase-orders"><div><b>Votre service, organisé</b><span>COMMANDES · MENU · SALLE</span></div><div class="mf-showcase-line"><i></i><span></span><b></b></div><div class="mf-showcase-line short"><i></i><span></span><b></b></div><div class="mf-showcase-line"><i></i><span></span><b></b></div></div>
+   </div>
   </div>
-  <div class="mf-hero-visual" aria-label="Cuisine africaine et grillades">
-    <div class="mf-food-photo"></div><div class="mf-photo-shade"></div>
-    <div class="mf-photo-label"><span>LA COUR DES GRANDS</span><b>Le goût du partage.</b></div>
-  </div>
+  <div class="mf-showcase-caption"><span class="mf-live-dot"></span> Un seul espace pour mieux organiser le service</div>
+ </div>
 </section>
-<section class="mf-section" id="experience">
-  <div class="mf-section-intro">
-    <div><div class="mf-kicker mf-kicker-dark"><i></i> MAQUISFLOW</div><h2>Tout le restaurant,<br><em>en quelques gestes.</em></h2></div>
-    <p>Une expérience simple, du menu jusqu’à la commande.</p>
-  </div>
-  <div class="mf-feature-grid">
-    <article class="mf-feature mf-feature-large"><div class="mf-feature-number">01 · MENU DIGITAL</div><div class="mf-feature-icon">▤</div><h3>La carte à portée de main.</h3><p>Consultez les plats, les prix et les disponibilités depuis votre téléphone.</p><a href="/restaurant?restaurant=chez-awa&table=1">Découvrir le menu <b>↗</b></a></article>
-    <article class="mf-feature mf-feature-green"><div class="mf-feature-number">02 · COMMANDES</div><div class="mf-feature-icon">↗</div><h3>Commander simplement.</h3><p>Composez votre commande et transmettez-la au restaurant.</p><div class="mf-order-preview"><div><span class="mf-order-dot"></span><b>Commande rapide</b><small>Un parcours clair et pratique</small></div><strong>✓</strong></div></article>
-    <article class="mf-feature mf-feature-gold"><div class="mf-feature-number">03 · QR CODE</div><div class="mf-feature-icon">⌘</div><h3>Scannez. Consultez.</h3><p>À table, accédez au menu en scannant simplement le QR code.</p><div class="mf-qr-art"><span>▦</span><small>VOTRE MENU SUR MOBILE</small></div></article>
-  </div>
+<div class="mf-platform-ribbon"><span>CARTE DIGITALE</span><i>✦</i><span>COMMANDES</span><i>✦</i><span>GESTION DES TABLES</span><i>✦</i><span>SUIVI D'ACTIVITÉ</span></div>
+<section class="mf-platform-section" id="solution">
+ <div class="mf-platform-heading"><div><div class="mf-kicker mf-kicker-dark"><i></i> LA SOLUTION MAQUISFLOW</div><h2>Moins de dispersion.<br><em>Plus de maîtrise.</em></h2></div><p>Les outils essentiels de votre établissement sont regroupés dans une interface cohérente, accessible depuis un ordinateur ou un téléphone.</p></div>
+ <div class="mf-platform-cards">
+  <article class="mf-platform-card mf-platform-card-dark"><div class="mf-card-index">01 / SERVICE</div><div class="mf-platform-icon">↗</div><h3>Les commandes<br>bien organisées.</h3><p>Retrouvez les commandes, consultez leurs détails et suivez leur évolution depuis votre espace restaurant.</p><span class="mf-card-foot">SUIVI DES COMMANDES <b>01</b></span></article>
+  <article class="mf-platform-card"><div class="mf-card-index">02 / MENU</div><div class="mf-platform-icon">▤</div><h3>Votre carte,<br>toujours à jour.</h3><p>Gérez vos plats, vos catégories, vos prix et les disponibilités. Les changements alimentent le menu digital.</p><span class="mf-card-foot">CARTE & PRODUITS <b>02</b></span></article>
+  <article class="mf-platform-card mf-platform-card-gold"><div class="mf-card-index">03 / SALLE</div><div class="mf-platform-icon">▦</div><h3>Une porte d'entrée<br>à chaque table.</h3><p>Associez un QR code à chaque table pour permettre aux clients d'ouvrir directement votre menu.</p><span class="mf-card-foot">TABLES & QR CODES <b>03</b></span></article>
+ </div>
 </section>
+<section class="mf-platform-work" id="outils"><div class="mf-work-visual"><div class="mf-work-orbit">M</div><div class="mf-work-stamp">SIMPLE<br><b>·</b><br>STRUCTURÉ</div></div><div class="mf-work-copy"><div class="mf-kicker"><i></i> UN QUOTIDIEN PLUS LISIBLE</div><h2>Gardez le contrôle,<br><em>même pendant le rush.</em></h2><p>MaquisFlow rassemble les informations utiles pour aider votre équipe à garder le fil du service.</p><ul><li><b>Vue d'ensemble</b><span>Indicateurs et activité récente.</span></li><li><b>Historique des commandes</b><span>Retrouvez les commandes enregistrées.</span></li><li><b>Gestion de la carte</b><span>Ajoutez, modifiez ou rendez un plat indisponible.</span></li><li><b>Suivi des paiements</b><span>Visualisez les informations de paiement et vérifiez les acomptes manuellement.</span></li></ul></div></section>
+<section class="mf-platform-steps" id="parcours"><div class="mf-platform-heading"><div><div class="mf-kicker mf-kicker-dark"><i></i> PRISE EN MAIN</div><h2>Un parcours <em>naturel.</em></h2></div><p>Du menu consulté par le client au suivi réalisé par le restaurant, chaque étape a sa place.</p></div><div class="mf-step-grid"><article><b>01</b><h3>Le client découvre</h3><p>Il ouvre le menu digital depuis un lien ou le QR code de sa table.</p></article><article><b>02</b><h3>Il compose sa commande</h3><p>Il choisit ses plats et transmet sa commande au restaurant.</p></article><article><b>03</b><h3>Vous pilotez le service</h3><p>Votre équipe retrouve la commande et met à jour son traitement dans l'espace restaurant.</p></article></div></section>
+<section class="mf-platform-cta"><div><div class="mf-kicker"><i></i> MAQUISFLOW · CÔTE D'IVOIRE</div><h2>Prêt à mieux organiser<br>votre établissement ?</h2><p>Retrouvez votre espace de gestion et prenez en main votre activité.</p></div><a href="/login">Ouvrir mon espace <b>↗</b></a></section>
 </main>
-<footer class="mf-footer"><a class="mf-logo" href="/"><span class="mf-logo-mark">M</span><span>MAQUIS<em>FLOW</em></span></a><small>© <span id="year"></span> MaquisFlow · Côte d’Ivoire</small></footer>
+<footer class="mf-platform-footer"><a class="mf-logo" href="/"><span class="mf-logo-mark">M</span><span>MAQUIS<em>FLOW</em><small>RESTAURANT MANAGEMENT</small></span></a><span>Une technologie au service de la restauration.</span><small>© <span id="year"></span> MaquisFlow · Côte d’Ivoire</small></footer>
 <script>document.getElementById('year').textContent=new Date().getFullYear();</script>
-</body>
-</html>
+</body></html>
