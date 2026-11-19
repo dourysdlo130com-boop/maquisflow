@@ -1,1 +1,71 @@
-<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>LA COUR DES GRANDS — Espace sécurisé</title><link rel="stylesheet" href="/styles.css"></head><body><div class="wrap"><div class="login card"><div class="brand">Maquis<span>Flow</span></div><h1>Espace restaurant</h1><p class="muted">Connectez-vous pour gérer votre menu et vos commandes.</p><form id="f"><div class="field"><label>Email</label><input id="email" type="email" placeholder="votre adresse e-mail" autocomplete="username" required></div><div class="field"><label>Mot de passe</label><input id="password" type="password" placeholder="votre mot de passe" autocomplete="current-password" required></div><button class="btn gold" style="width:100%">Se connecter</button></form><p class="small muted">Accès sécurisé réservé à l’équipe de LA COUR DES GRANDS.</p></div></div><script>f.onsubmit=async e=>{e.preventDefault();let r=await fetch('/api/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:email.value,password:password.value})});let d=await r.json();if(r.ok)location='/admin';else alert(d.error||'Erreur');}</script></body></html>
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#14251d">
+<meta name="description" content="Connexion sécurisée à votre espace restaurant MaquisFlow.">
+<title>Connexion — MaquisFlow</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body class="mf-login-page">
+<main class="mf-login-shell">
+ <section class="mf-login-story" aria-label="MaquisFlow">
+  <a class="mf-login-brand" href="/"><span class="mf-login-symbol">M</span><span>MAQUIS<em>FLOW</em><small>RESTAURANT MANAGEMENT</small></span></a>
+  <div class="mf-login-message">
+   <div class="mf-login-kicker"><i></i> VOTRE ESPACE DE TRAVAIL</div>
+   <h1>Le service commence par une bonne <em>organisation.</em></h1>
+   <p>Retrouvez vos commandes, votre carte et les outils de gestion de votre établissement dans un seul espace.</p>
+  </div>
+  <div class="mf-login-story-foot"><span>01 — COMMANDES</span><span>02 — MENU & TABLES</span><span>03 — PILOTAGE</span></div>
+  <div class="mf-login-orbit" aria-hidden="true">M</div>
+ </section>
+ <section class="mf-login-panel">
+  <div class="mf-login-panel-top"><span>ESPACE RESTAURANT</span><a href="/">Retour au site <b>↗</b></a></div>
+  <div class="mf-login-card">
+   <div class="mf-login-card-mark">M</div>
+   <div class="mf-login-eyebrow">BON RETOUR</div>
+   <h2>Connectez-vous.</h2>
+   <p class="mf-login-intro">Accédez à l'espace de gestion de votre restaurant.</p>
+   <form id="mf-login-form" novalidate>
+    <div class="mf-login-field"><label for="mf-email">Adresse e-mail</label><div class="mf-login-input-wrap"><span aria-hidden="true">✉</span><input id="mf-email" name="email" type="email" placeholder="nom@restaurant.com" autocomplete="username" required></div></div>
+    <div class="mf-login-field"><label for="mf-password">Mot de passe</label><div class="mf-login-input-wrap"><span aria-hidden="true">⌑</span><input id="mf-password" name="password" type="password" placeholder="Votre mot de passe" autocomplete="current-password" required><button class="mf-password-toggle" id="mf-toggle-password" type="button" aria-label="Afficher le mot de passe">Afficher</button></div></div>
+    <p class="mf-login-error" id="mf-login-error" role="alert" aria-live="polite"></p>
+    <button class="mf-login-submit" id="mf-login-submit" type="submit"><span>Accéder à mon espace</span><b>↗</b></button>
+   </form>
+   <div class="mf-login-secure"><span>◇</span><p>Connexion réservée aux membres autorisés de votre établissement. Ne partagez jamais votre mot de passe.</p></div>
+  </div>
+  <div class="mf-login-panel-foot"><span>MAQUISFLOW</span><span>UNE TECHNOLOGIE AU SERVICE DE LA RESTAURATION</span></div>
+ </section>
+</main>
+<script>
+(()=>{
+ const form=document.getElementById('mf-login-form');
+ const email=document.getElementById('mf-email');
+ const password=document.getElementById('mf-password');
+ const error=document.getElementById('mf-login-error');
+ const submit=document.getElementById('mf-login-submit');
+ const toggle=document.getElementById('mf-toggle-password');
+ toggle.addEventListener('click',()=>{
+   const visible=password.type==='password';
+   password.type=visible?'text':'password';
+   toggle.textContent=visible?'Masquer':'Afficher';
+   toggle.setAttribute('aria-label',visible?'Masquer le mot de passe':'Afficher le mot de passe');
+ });
+ form.addEventListener('submit',async event=>{
+   event.preventDefault();
+   error.textContent='';
+   if(!email.value.trim()||!password.value){error.textContent='Renseignez votre adresse e-mail et votre mot de passe.';return;}
+   submit.disabled=true;submit.classList.add('is-loading');submit.querySelector('span').textContent='Connexion en cours…';
+   try{
+    const response=await fetch('/api/login',{method:'POST',headers:{'Content-Type':'application/json'},credentials:'same-origin',body:JSON.stringify({email:email.value.trim(),password:password.value})});
+    let data={};try{data=await response.json();}catch(_){}
+    if(response.ok){window.location.assign('/admin');return;}
+    error.textContent=data.error||'Identifiants incorrects. Vérifiez vos informations et réessayez.';
+   }catch(_){error.textContent='Connexion impossible pour le moment. Vérifiez votre connexion internet puis réessayez.';}
+   finally{submit.disabled=false;submit.classList.remove('is-loading');submit.querySelector('span').textContent='Accéder à mon espace';}
+ });
+})();
+</script>
+</body></html>
